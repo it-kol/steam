@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Immersive Translate × Steam · Creator Collaboration Brief</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-base: #080c14;
+      --bg-card: #0f1623;
+      --bg-card-hover: #16202f;
+      --bg-panel: #0b1019;
+      --border: rgba(56, 189, 248, 0.12);
+      --border-bright: rgba(56, 189, 248, 0.35);
+      --border-subtle: rgba(255,255,255,0.06);
+      --cyan: #38bdf8;
+      --cyan-glow: rgba(56, 189, 248, 0.1);
+      --pink: #ec4899;
+      --pink-glow: rgba(236, 72, 153, 0.15);
+      --green: #34d399;
+      --yellow: #fbbf24;
+      --purple: #a78bfa;
+      --steam-blue: #1b2838;
+      --steam-teal: #66c0f4;
+      --text-primary: #e2e8f0;
+      --text-secondary: #94a3b8;
+      --text-muted: #4b5563;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --radius-xl: 22px;
+      --shadow-card: 0 8px 32px rgba(0,0,0,0.5);
+      --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg-base);
+      color: var(--text-primary);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    a { color: var(--cyan); text-decoration: none; }
+    a:hover { color: #7dd3fc; }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg-base); }
+    ::-webkit-scrollbar-thumb { background: rgba(56,189,248,0.3); border-radius: 3px; }
+
+    /* NAV */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px; height: 58px;
+      background: rgba(8,12,20,0.92);
+      backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 9px; flex-shrink: 0;
+      font-size: 13px; font-weight: 700; color: var(--text-primary); white-space: nowrap;
+    }
+    .nav-logo-img { width: 28px; height: 28px; border-radius: 7px; object-fit: cover; flex-shrink: 0; }
+    .nav-sep { color: var(--text-muted); margin: 0 4px; }
+    .nav-links { display: flex; align-items: center; gap: 20px; list-style: none; }
+    .nav-links a { font-size: 12px; font-weight: 500; color: var(--text-muted); transition: color var(--transition); white-space: nowrap; }
+    .nav-links a:hover { color: var(--text-primary); }
+    .nav-links a.active { color: var(--cyan); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--text-secondary); border-radius: 2px; }
+    @media(max-width:900px){ .nav-links{display:none;} .hamburger{display:flex;} }
+    .mobile-nav {
+      display: none; flex-direction: column; gap: 4px;
+      position: fixed; top: 58px; left: 0; right: 0; z-index: 199;
+      background: rgba(8,12,20,0.97); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border); padding: 16px 24px;
+    }
+    .mobile-nav a {
+      display: block; padding: 10px 14px; border-radius: var(--radius-sm);
+      font-size: 14px; font-weight: 500; color: var(--text-secondary);
+      transition: all var(--transition);
+    }
+    .mobile-nav a:hover { background: rgba(255,255,255,0.05); color: var(--text-primary); }
+
+    /* BUTTONS */
+    .btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 8px 18px; border-radius: var(--radius-sm);
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      transition: all var(--transition); border: none; text-decoration: none;
+      letter-spacing: 0.01em; white-space: nowrap;
+    }
+    .btn-primary { background: linear-gradient(135deg, #ec4899, #f97316); color: white; box-shadow: 0 0 24px rgba(236,72,153,0.25); }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 0 36px rgba(236,72,153,0.45); color: white; }
+    .btn-outline { background: transparent; color: var(--cyan); border: 1px solid var(--border-bright); }
+    .btn-outline:hover { background: var(--cyan-glow); color: var(--cyan); }
+    .btn-ghost { background: rgba(255,255,255,0.05); color: var(--text-secondary); border: 1px solid var(--border-subtle); }
+    .btn-ghost:hover { background: rgba(255,255,255,0.08); color: var(--text-primary); }
+    .btn-lg { padding: 13px 26px; font-size: 15px; border-radius: var(--radius-md); }
+    .btn-landing { background: linear-gradient(135deg, #1b2838, #2a475e); color: var(--steam-teal); border: 1px solid rgba(102,192,244,0.3); box-shadow: 0 0 20px rgba(102,192,244,0.1); }
+    .btn-landing:hover { box-shadow: 0 0 30px rgba(102,192,244,0.25); transform: translateY(-1px); color: var(--steam-teal); }
+    .btn-download-logo { background: rgba(236,72,153,0.12); border: 1px solid rgba(236,72,153,0.35); color: #f9a8d4; }
+    .btn-download-logo:hover { background: rgba(236,72,153,0.25); border-color: rgba(236,72,153,0.65); color: #fff; }
+
+    /* HERO */
+    .hero {
+      position: relative; min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; padding: 110px 48px 80px;
+    }
+    .hero-bg-gradient {
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(27,40,56,0.9) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 50% at 50% -5%, rgba(56,189,248,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 10% 90%, rgba(236,72,153,0.1) 0%, transparent 55%),
+        radial-gradient(ellipse 35% 30% at 90% 80%, rgba(139,92,246,0.08) 0%, transparent 50%);
+    }
+    .hero-grid-bg {
+      position: absolute; inset: 0; pointer-events: none; opacity: 0.03;
+      background-image: linear-gradient(rgba(56,189,248,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(56,189,248,0.5) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .hero-particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .particle {
+      position: absolute; border-radius: 50%; opacity: 0;
+      background: var(--cyan);
+      animation: particleFloat linear infinite;
+    }
+    @keyframes particleFloat {
+      0% { opacity: 0; transform: translateY(100vh) scale(0); }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.3; }
+      100% { opacity: 0; transform: translateY(-10vh) scale(1.2); }
+    }
+    .hero-deco-steam {
+      position: absolute; top: 80px; right: 60px; width: 160px; opacity: 0.06;
+      animation: decoFloat 8s ease-in-out infinite;
+    }
+    .hero-deco-steam2 {
+      position: absolute; bottom: 60px; left: 40px; width: 100px; opacity: 0.04;
+      animation: decoFloat 11s ease-in-out infinite reverse;
+    }
+    .hero-deco-pad {
+      position: absolute; top: 40%; left: 30px; width: 80px; opacity: 0.05;
+      animation: decoFloat 9s ease-in-out infinite;
+    }
+    .hero-deco-pad2 {
+      position: absolute; bottom: 100px; right: 80px; width: 70px; opacity: 0.04;
+      animation: decoFloat 13s ease-in-out infinite reverse;
+    }
+    .hero-deco-steam img, .hero-deco-steam2 img, .hero-deco-pad img, .hero-deco-pad2 img { width: 100%; filter: invert(1); }
+    @keyframes decoFloat {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-18px) rotate(4deg); }
+    }
+    .hero-content { position: relative; z-index: 2; text-align: center; max-width: 860px; }
+    .hero-logo-row { display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 28px; }
+    .logo-3d-wrap {
+      position: relative; width: 96px; height: 96px;
+      transition: transform 0.15s ease;
+    }
+    .logo-3d-glow {
+      position: absolute; inset: -12px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(56,189,248,0.35) 0%, transparent 70%);
+      animation: glowPulse 3s ease-in-out infinite;
+    }
+    .logo-3d-ring {
+      position: absolute; inset: -6px; border-radius: 50%;
+      border: 1.5px solid rgba(56,189,248,0.3);
+      animation: ringRotate 8s linear infinite;
+    }
+    .logo-3d-ring2 {
+      position: absolute; inset: -14px; border-radius: 50%;
+      border: 1px solid rgba(236,72,153,0.15);
+      animation: ringRotate 14s linear infinite reverse;
+    }
+    @keyframes glowPulse { 0%,100%{opacity:0.6;transform:scale(1)} 50%{opacity:1;transform:scale(1.08)} }
+    @keyframes ringRotate { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+    .logo-3d-img { width: 96px; height: 96px; border-radius: 22px; object-fit: cover; position: relative; z-index: 1; box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
+    .hero-logo-x { font-size: 28px; color: var(--text-muted); font-weight: 300; }
+    .hero-steam-badge {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 20px; border-radius: var(--radius-md);
+      background: rgba(27,40,56,0.8); border: 1px solid rgba(102,192,244,0.3);
+      box-shadow: 0 0 20px rgba(102,192,244,0.1);
+    }
+    .hero-steam-badge img { width: 28px; height: 28px; object-fit: contain; filter: invert(1); }
+    .hero-steam-badge span { font-size: 14px; font-weight: 800; color: var(--steam-teal); letter-spacing: 0.12em; }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 12px; font-weight: 600; color: var(--cyan);
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 6px 16px; border-radius: 999px;
+      background: rgba(56,189,248,0.08); border: 1px solid rgba(56,189,248,0.2);
+      margin-bottom: 20px;
+    }
+    .pulse-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 8px var(--cyan); animation: pulseDot 2s ease-in-out infinite; }
+    @keyframes pulseDot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.7)} }
+    .hero-h1 { font-size: clamp(32px,5vw,60px); font-weight: 900; line-height: 1.12; margin-bottom: 20px; letter-spacing: -0.02em; }
+    .grad-blue { background: linear-gradient(135deg, var(--steam-teal), var(--cyan), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero-sub { font-size: 16px; color: var(--text-secondary); max-width: 620px; margin: 0 auto 28px; line-height: 1.75; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-bottom: 32px; }
+    .hero-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 28px; }
+    .chip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 999px; font-size: 12px; font-weight: 500; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: var(--text-secondary); transition: all var(--transition); cursor: default; }
+    .chip:hover { background: rgba(56,189,248,0.08); border-color: rgba(56,189,248,0.25); color: var(--text-primary); }
+    .hero-divider { width: 60px; height: 1px; background: linear-gradient(90deg, transparent, rgba(56,189,248,0.4), transparent); margin: 0 auto 24px; }
+    .hero-stats { display: flex; flex-wrap: wrap; gap: 24px; justify-content: center; }
+    .stat { text-align: center; }
+    .stat-n { font-size: 22px; font-weight: 800; color: var(--text-primary); }
+    .stat-n em { font-style: normal; color: var(--cyan); }
+    .stat-l { font-size: 11px; color: var(--text-muted); font-weight: 500; letter-spacing: 0.05em; }
+
+    /* SECTIONS */
+    section { padding: 80px 0; }
+    .inner { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
+    .sec-head { text-align: center; margin-bottom: 48px; }
+    .sec-label { font-size: 11px; font-weight: 700; color: var(--cyan); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px; }
+    .sec-title { font-size: clamp(24px,3.5vw,38px); font-weight: 800; margin-bottom: 14px; letter-spacing: -0.01em; }
+    .sec-desc { font-size: 14px; color: var(--text-secondary); max-width: 600px; margin: 0 auto; line-height: 1.7; }
+
+    /* BRIEF TABLE */
+    .brief-table-wrap { overflow-x: auto; border-radius: var(--radius-lg); border: 1px solid var(--border); }
+    .brief-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .brief-table th { padding: 14px 18px; text-align: left; font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border); white-space: nowrap; }
+    .brief-table td { padding: 14px 18px; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top; line-height: 1.6; }
+    .brief-table tr:last-child td { border-bottom: none; }
+    .brief-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .brief-table td:first-child { font-weight: 700; color: var(--text-primary); white-space: nowrap; }
+    .badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+    .badge-must { background: rgba(236,72,153,0.12); border: 1px solid rgba(236,72,153,0.3); color: var(--pink); }
+    .badge-doc { background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.25); color: var(--cyan); }
+    .badge-opt { background: rgba(167,139,250,0.1); border: 1px solid rgba(167,139,250,0.25); color: var(--purple); }
+    .badge-adv { background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.25); color: var(--green); }
+    .brief-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; }
+    @media(max-width:700px){ .brief-grid{grid-template-columns:1fr;} }
+    .brief-card { padding: 20px 24px; border-radius: var(--radius-lg); border: 1px solid var(--border); background: var(--bg-card); }
+    .brief-card-title { font-size: 13px; font-weight: 700; color: var(--text-primary); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    .brief-card ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .brief-card ul li { font-size: 13px; color: var(--text-secondary); padding-left: 16px; position: relative; line-height: 1.6; }
+    .brief-card ul li::before { content: ''; position: absolute; left: 0; top: 9px; width: 5px; height: 5px; border-radius: 50%; background: var(--cyan); opacity: 0.6; }
+    .brief-card.warn { border-color: rgba(251,191,36,0.2); background: rgba(251,191,36,0.04); }
+    .brief-card.warn .brief-card-title { color: var(--yellow); }
+    .brief-card.warn ul li::before { background: var(--yellow); }
+
+    /* PRICING */
+    .pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 28px; }
+    @media(max-width:800px){ .pricing-grid{grid-template-columns:1fr;} }
+    .pricing-card { padding: 24px; border-radius: var(--radius-lg); border: 1px solid var(--border); background: var(--bg-card); position: relative; }
+    .pricing-card.featured { border-color: rgba(236,72,153,0.4); background: rgba(236,72,153,0.04); }
+    .pricing-badge { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); padding: 3px 12px; border-radius: 999px; font-size: 10px; font-weight: 800; background: linear-gradient(135deg,#ec4899,#f97316); color: white; white-space: nowrap; letter-spacing: 0.06em; }
+    .pricing-plan { font-size: 12px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+    .pricing-price { font-size: 28px; font-weight: 900; color: var(--text-primary); margin-bottom: 4px; }
+    .pricing-price span { font-size: 13px; font-weight: 500; color: var(--text-muted); }
+    .pricing-desc { font-size: 12px; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.6; }
+    .pricing-features { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+    .pricing-features li { font-size: 12px; color: var(--text-secondary); padding-left: 18px; position: relative; }
+    .pricing-features li::before { content: '✓'; position: absolute; left: 0; color: var(--green); font-weight: 700; font-size: 11px; }
+
+    /* TIPS */
+    .tips-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; }
+    @media(max-width:700px){ .tips-grid{grid-template-columns:1fr;} }
+    .tips-card { padding: 20px 24px; border-radius: var(--radius-lg); border: 1px solid var(--border); background: var(--bg-card); }
+    .tips-card-title { font-size: 13px; font-weight: 700; color: var(--cyan); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    .tips-item { font-size: 12px; color: var(--text-secondary); padding: 8px 12px; border-radius: var(--radius-sm); background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); margin-bottom: 8px; line-height: 1.6; }
+
+    /* SCRIPT */
+    .notice-warn { display: flex; align-items: flex-start; gap: 10px; padding: 14px 18px; border-radius: var(--radius-md); background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); margin-bottom: 20px; font-size: 13px; color: var(--text-secondary); }
+    .notice-warn strong { color: #f87171; }
+    .notice-yellow { display: flex; align-items: flex-start; gap: 10px; padding: 14px 18px; border-radius: var(--radius-md); background: rgba(251,191,36,0.06); border: 1px solid rgba(251,191,36,0.2); margin-bottom: 20px; font-size: 13px; color: var(--text-secondary); }
+    .notice-yellow strong { color: var(--yellow); }
+    .tab-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+    .tab { padding: 8px 18px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; background: rgba(255,255,255,0.04); border: 1px solid var(--border-subtle); color: var(--text-muted); cursor: pointer; transition: all var(--transition); }
+    .tab.on { background: rgba(56,189,248,0.1); border-color: rgba(56,189,248,0.35); color: var(--cyan); }
+    .panel { display: none; }
+    .panel.on { display: block; }
+    .sc-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-xl); overflow: hidden; }
+    .sc-head { padding: 20px 28px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 14px; }
+    .sc-badge { padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 800; letter-spacing: 0.06em; }
+    .b-pain { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.3); color: #f87171; }
+    .b-eff { background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.25); color: var(--cyan); }
+    .b-rec { background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.25); color: var(--green); }
+    .b-exp { background: rgba(167,139,250,0.1); border: 1px solid rgba(167,139,250,0.25); color: var(--purple); }
+    .sc-head-title { font-size: 16px; font-weight: 700; }
+    .sc-body { padding: 24px 28px; display: flex; flex-direction: column; gap: 20px; }
+    .sc-field-label { font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+    .sc-titles { display: flex; flex-direction: column; gap: 8px; }
+    .sc-title-i { padding: 10px 14px; border-radius: var(--radius-sm); background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle); font-size: 13px; color: var(--text-primary); font-weight: 500; }
+    .sc-quote { padding: 14px 18px; border-radius: var(--radius-md); background: rgba(56,189,248,0.05); border-left: 3px solid var(--cyan); font-size: 13px; color: var(--text-secondary); line-height: 1.7; font-style: italic; }
+    .sc-field-text { font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
+    .sc-full { display: flex; flex-direction: column; gap: 12px; }
+    .notice-box { display: flex; align-items: flex-start; gap: 10px; padding: 12px 16px; border-radius: var(--radius-md); background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle); font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
+
+    /* INSTALL */
+    .install-bg { background: linear-gradient(180deg, var(--bg-base) 0%, rgba(27,40,56,0.3) 50%, var(--bg-base) 100%); }
+    .steam-divider { display: flex; align-items: center; gap: 16px; margin: 24px 0; }
+    .steam-divider::before, .steam-divider::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(102,192,244,0.2), transparent); }
+    .steam-divider-ico { font-size: 20px; }
+    .steps-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
+    @media(max-width:900px){ .steps-row{grid-template-columns:repeat(2,1fr);} }
+    @media(max-width:500px){ .steps-row{grid-template-columns:1fr;} }
+    .step-card { padding: 22px 20px; border-radius: var(--radius-lg); background: var(--bg-card); border: 1px solid var(--border); transition: all var(--transition); }
+    .step-card:hover { border-color: var(--border-bright); transform: translateY(-2px); }
+    .step-n { font-size: 11px; font-weight: 800; color: var(--text-muted); letter-spacing: 0.1em; margin-bottom: 10px; }
+    .step-em { font-size: 28px; margin-bottom: 10px; }
+    .step-t { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+    .step-d { font-size: 12px; color: var(--text-secondary); line-height: 1.65; }
+    .code-tag { display: inline-block; padding: 3px 8px; border-radius: 4px; background: rgba(56,189,248,0.08); border: 1px solid rgba(56,189,248,0.2); color: var(--cyan); font-family: monospace; font-size: 12px; }
+
+    /* REFS */
+    .ref-bg { background: linear-gradient(180deg, var(--bg-base) 0%, rgba(15,22,35,0.8) 50%, var(--bg-base) 100%); }
+    .ref-row-label { font-size: 12px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+    .ref-row-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .ref-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 32px; }
+    @media(max-width:800px){ .ref-grid{grid-template-columns:1fr 1fr;} }
+    @media(max-width:500px){ .ref-grid{grid-template-columns:1fr;} }
+    .ref-card { display: flex; flex-direction: column; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; transition: all var(--transition); text-decoration: none; color: inherit; }
+    .ref-card:hover { border-color: var(--border-bright); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+    .ref-thumb { position: relative; height: 120px; background: linear-gradient(135deg, #1b2838, #2a475e); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .play-circle { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; font-size: 14px; }
+    .ref-platform-tag { position: absolute; top: 8px; left: 8px; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; }
+    .plat-yt { background: rgba(255,0,0,0.2); border: 1px solid rgba(255,0,0,0.4); color: #ff6b6b; }
+    .plat-ig { background: rgba(225,48,108,0.2); border: 1px solid rgba(225,48,108,0.4); color: #f472b6; }
+    .plat-tt { background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); color: #e2e8f0; }
+    .ref-play-tag { position: absolute; bottom: 8px; right: 8px; font-size: 10px; color: rgba(255,255,255,0.6); }
+    .ref-body { padding: 14px 16px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
+    .ref-author-row { display: flex; align-items: center; gap: 8px; }
+    .ref-avatar { width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, var(--cyan), var(--purple)); flex-shrink: 0; }
+    .ref-author-name { font-size: 11px; color: var(--text-muted); font-weight: 600; }
+    .ref-title { font-size: 13px; font-weight: 600; color: var(--text-primary); line-height: 1.5; }
+    .ref-insight { display: flex; gap: 6px; font-size: 11px; color: var(--text-muted); line-height: 1.5; padding: 8px 10px; background: rgba(255,255,255,0.02); border-radius: var(--radius-sm); }
+    .ref-foot { padding: 10px 16px; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; }
+    .ref-stats { display: flex; gap: 8px; }
+    .ref-stat { font-size: 11px; color: var(--text-muted); }
+    .ref-view { font-size: 11px; color: var(--cyan); font-weight: 600; }
+
+    /* COLLAB FLOW */
+    .flow-list { display: flex; flex-direction: column; gap: 0; }
+    .flow-step { display: flex; gap: 20px; padding: 24px 0; }
+    .flow-step-left { display: flex; flex-direction: column; align-items: center; width: 44px; flex-shrink: 0; }
+    .flow-step-num { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 800; flex-shrink: 0; }
+    .fsn-1 { background: rgba(236,72,153,0.12); border: 1px solid rgba(236,72,153,0.35); color: var(--pink); }
+    .fsn-2 { background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.3); color: var(--cyan); }
+    .fsn-3 { background: rgba(167,139,250,0.1); border: 1px solid rgba(167,139,250,0.3); color: var(--purple); }
+    .fsn-4 { background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.3); color: var(--yellow); }
+    .fsn-5 { background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.3); color: var(--green); }
+    .flow-step-line { flex: 1; width: 1px; background: var(--border); margin: 8px 0; min-height: 24px; }
+    .fsl-1 { background: linear-gradient(180deg, rgba(236,72,153,0.3), rgba(56,189,248,0.2)); }
+    .fsl-2 { background: linear-gradient(180deg, rgba(56,189,248,0.2), rgba(167,139,250,0.2)); }
+    .fsl-3 { background: linear-gradient(180deg, rgba(167,139,250,0.2), rgba(251,191,36,0.2)); }
+    .fsl-4 { background: linear-gradient(180deg, rgba(251,191,36,0.2), rgba(52,211,153,0.2)); }
+    .flow-step-right { flex: 1; padding-bottom: 16px; }
+    .flow-step-tag { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+    .fst-1 { background: rgba(236,72,153,0.1); border: 1px solid rgba(236,72,153,0.25); color: var(--pink); }
+    .fst-2 { background: rgba(56,189,248,0.08); border: 1px solid rgba(56,189,248,0.2); color: var(--cyan); }
+    .fst-3 { background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.2); color: var(--purple); }
+    .fst-4 { background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.2); color: var(--yellow); }
+    .fst-5 { background: rgba(52,211,153,0.08); border: 1px solid rgba(52,211,153,0.2); color: var(--green); }
+    .flow-step-title { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .flow-step-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.7; }
+    .flow-step-items { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .flow-item { padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 600; background: rgba(255,255,255,0.04); border: 1px solid var(--border-subtle); color: var(--text-muted); }
+    .collab-cta-box { margin-top: 40px; padding: 36px; border-radius: var(--radius-xl); background: linear-gradient(135deg, rgba(236,72,153,0.08), rgba(56,189,248,0.06)); border: 1px solid rgba(236,72,153,0.2); text-align: center; }
+    .collab-cta-box h3 { font-size: 22px; font-weight: 800; margin-bottom: 10px; }
+    .collab-cta-box p { font-size: 14px; color: var(--text-secondary); margin-bottom: 20px; }
+
+    /* FOOTER */
+    .footer { padding: 48px 40px 32px; text-align: center; border-top: 1px solid var(--border); }
+    .footer-logo { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px; }
+    .footer-logo-img { width: 28px; height: 28px; border-radius: 8px; object-fit: cover; }
+    .footer-logo span { font-size: 15px; font-weight: 700; }
+    .footer-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin-bottom: 20px; }
+    .footer-links a { font-size: 12px; color: var(--text-muted); transition: color var(--transition); }
+    .footer-links a:hover { color: var(--cyan); }
+    .footer-copy { font-size: 11px; color: var(--text-muted); opacity: 0.5; }
+
+    /* MODALS */
+    .modal-overlay { display: none; position: fixed; inset: 0; z-index: 500; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 20px; }
+    .modal-overlay.open { display: flex; }
+    .modal-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 32px; max-width: 480px; width: 100%; position: relative; max-height: 90vh; overflow-y: auto; }
+    .modal-close { position: absolute; top: 16px; right: 16px; background: none; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; }
+    .modal-title { font-size: 18px; font-weight: 800; margin-bottom: 8px; }
+    .modal-sub { font-size: 13px; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.6; }
+    .contact-row { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: var(--radius-md); background: rgba(255,255,255,0.03); border: 1px solid var(--border); margin-bottom: 10px; }
+    .contact-ico { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .contact-name { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+    .contact-email { font-size: 12px; color: var(--cyan); font-family: monospace; }
+    .contact-copy-btn { margin-left: auto; padding: 5px 12px; border-radius: var(--radius-sm); background: rgba(56,189,248,0.08); border: 1px solid rgba(56,189,248,0.2); color: var(--cyan); font-size: 11px; font-weight: 600; cursor: pointer; transition: all var(--transition); flex-shrink: 0; }
+    .contact-copy-btn:hover { background: rgba(56,189,248,0.18); }
+    .contact-copy-btn.copied { background: rgba(52,211,153,0.12); border-color: rgba(52,211,153,0.3); color: var(--green); }
+    .share-input-row { display: flex; gap: 8px; margin-bottom: 16px; }
+    .share-input { flex: 1; padding: 10px 14px; border-radius: var(--radius-sm); background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--text-primary); font-size: 12px; font-family: monospace; }
+    .share-platforms { display: grid; grid-template-columns: repeat(2,1fr); gap: 8px; }
+    .share-plat-btn { padding: 12px; border-radius: var(--radius-md); background: rgba(255,255,255,0.03); border: 1px solid var(--border); cursor: pointer; transition: all var(--transition); display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .share-plat-btn:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.15); }
+    .share-plat-ico { font-size: 20px; }
+    .share-plat-label { font-size: 11px; color: var(--text-secondary); font-weight: 600; }
+
+    /* SIDE FLOAT */
+    .side-float { position: fixed; left: 0; top: 50%; transform: translateY(-50%); z-index: 100; display: flex; flex-direction: column; gap: 4px; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+    .side-float.visible { opacity: 1; pointer-events: auto; }
+    .side-btn { display: flex; align-items: center; gap: 0; padding: 0; border: none; cursor: pointer; background: none; overflow: hidden; border-radius: 0 var(--radius-md) var(--radius-md) 0; transition: all var(--transition); }
+    .side-btn-ico { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: rgba(15,22,35,0.95); border: 1px solid var(--border); border-left: none; font-size: 16px; flex-shrink: 0; }
+    .side-btn-label { max-width: 0; overflow: hidden; white-space: nowrap; font-size: 12px; font-weight: 600; color: var(--text-secondary); background: rgba(15,22,35,0.95); border: 1px solid var(--border); border-left: none; height: 36px; display: flex; align-items: center; transition: max-width 0.3s, padding 0.3s; padding: 0; }
+    .side-btn:hover .side-btn-label { max-width: 160px; padding: 0 12px; }
+    .share-btn .side-btn-ico { border-color: rgba(56,189,248,0.25); }
+    .share-btn .side-btn-label { border-color: rgba(56,189,248,0.25); color: var(--cyan); }
+
+    /* BOTTOM BAR */
+    .bottom-landing-bar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 150; background: rgba(8,12,20,0.97); backdrop-filter: blur(20px); border-top: 1px solid var(--border); padding: 12px 32px; display: flex; align-items: center; justify-content: space-between; gap: 16px; transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .bottom-landing-bar.visible { transform: translateY(0); }
+    .bottom-bar-left { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+    .bottom-bar-icon { width: 32px; height: 32px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
+    .bottom-bar-text { font-size: 12px; color: var(--text-secondary); line-height: 1.5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .bottom-bar-url { font-size: 11px; color: var(--cyan); font-family: monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .bottom-bar-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .bottom-bar-close { background: none; border: none; color: var(--text-muted); font-size: 18px; cursor: pointer; padding: 4px; }
+
+    /* MOBILE ACTION BAR */
+    .mobile-action-bar { display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 140; padding: 10px 16px; background: rgba(8,12,20,0.97); backdrop-filter: blur(20px); border-top: 1px solid var(--border); gap: 8px; }
+    @media(max-width:700px){ .mobile-action-bar{display:flex;} .bottom-landing-bar{display:none;} }
+    .mob-btn { flex: 1; padding: 10px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 700; border: none; cursor: pointer; transition: all var(--transition); }
+    .mob-btn-share { background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.25); color: var(--cyan); }
+    .mob-btn-collab { background: linear-gradient(135deg, #ec4899, #f97316); color: white; }
+
+    /* REVEAL ANIMATION */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.55s ease, transform 0.55s ease; }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+    .d1{transition-delay:0.05s} .d2{transition-delay:0.12s} .d3{transition-delay:0.19s} .d4{transition-delay:0.26s}
+
+    @keyframes fadeInUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    .hero-content > * { animation: fadeInUp 0.6s ease both; }
+    .hero-content > *:nth-child(1){animation-delay:0.1s}
+    .hero-content > *:nth-child(2){animation-delay:0.2s}
+    .hero-content > *:nth-child(3){animation-delay:0.3s}
+    .hero-content > *:nth-child(4){animation-delay:0.4s}
+    .hero-content > *:nth-child(5){animation-delay:0.5s}
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-logo">
+      <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663402005199/AdlZOKmKnlgVUZuk.jpg" alt="Immersive Translate" class="nav-logo-img" />
+      <span>Immersive Translate</span>
+      <span class="nav-sep">×</span>
+      <span>Steam Creator Brief</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#brief">Product Brief</a></li>
+      <li><a href="#script">Content Ideas</a></li>
+      <li><a href="#install">Install Guide</a></li>
+      <li><a href="#refs">Case Studies</a></li>
+      <li><a href="#collab">Collab Process</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="hamburger" onclick="toggleMobileNav()"><span></span><span></span><span></span></button>
+  </nav>
+
+  <!-- MOBILE NAV -->
+  <div class="mobile-nav" id="mobileNav">
+    <a href="#brief" onclick="closeMobileNav()">📋 Product Brief</a>
+    <a href="#script" onclick="closeMobileNav()">💡 Content Ideas</a>
+    <a href="#install" onclick="closeMobileNav()">📦 Install Guide</a>
+    <a href="#refs" onclick="closeMobileNav()">🔥 Case Studies</a>
+    <a href="#collab" onclick="closeMobileNav()">🤝 Collab Process</a>
+    <a href="#contact" onclick="closeMobileNav()">📧 Contact</a>
+  </div>
+
+  <!-- MOBILE ACTION BAR -->
+  <div class="mobile-action-bar">
+    <button class="mob-btn mob-btn-share" onclick="openShareModal()">🔗 Share with a Creator Friend</button>
+    <button class="mob-btn mob-btn-collab" onclick="openCollabModal()">🤝 Apply to Collab</button>
+  </div>
+
+  <!-- BOTTOM STICKY BAR -->
+  <div class="bottom-landing-bar" id="bottomBar">
+    <div class="bottom-bar-left">
+      <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663402005199/AdlZOKmKnlgVUZuk.jpg" alt="" class="bottom-bar-icon" />
+      <div>
+        <div class="bottom-bar-text">🎮 Always pin in comments: Landing Page link + exclusive discount code + weekly subscription giveaway — these three drive conversions</div>
+        <div class="bottom-bar-url">https://immersivetranslate.com/en/landing/steam</div>
+      </div>
+    </div>
+    <div class="bottom-bar-right">
+      <a href="https://immersivetranslate.com/en/landing/steam" target="_blank" class="btn btn-primary" style="font-size:12px;padding:7px 16px">Visit Landing Page ↗</a>
+      <button onclick="copyLandingUrl(this)" class="btn btn-outline" style="font-size:12px;padding:7px 14px">Copy Link</button>
+      <button class="bottom-bar-close" onclick="document.getElementById('bottomBar').style.display='none'">×</button>
+    </div>
+  </div>
+
+  <!-- SIDE FLOAT -->
+  <div class="side-float" id="sideFloat">
+    <button class="side-btn share-btn" onclick="openShareModal()">
+      <span class="side-btn-ico">📤</span>
+      <span class="side-btn-label">Share with Creator Friends</span>
+    </button>
+    <button class="side-btn" onclick="openCollabModal()">
+      <span class="side-btn-ico">🤝</span>
+      <span class="side-btn-label">Apply to Collab</span>
+    </button>
+  </div>
+
+  <!-- COLLAB MODAL -->
+  <div class="modal-overlay" id="collabModal" onclick="closeModal('collabModal')">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal('collabModal')">×</button>
+      <div class="modal-title">🤝 Let's Work Together</div>
+      <div class="modal-sub">Email us with your platform, channel link, and audience size. We'll get back to you within 24 hours.</div>
+      <div class="contact-row">
+        <div class="contact-ico" style="background:rgba(236,72,153,0.12)">📧</div>
+        <div>
+          <div class="contact-name">Song Enqing · Partnerships</div>
+          <div class="contact-email">songenqing@funstory.ai</div>
+        </div>
+        <button class="contact-copy-btn" onclick="copyEmail(this,'songenqing@funstory.ai')">Copy</button>
+      </div>
+      <div class="contact-row">
+        <div class="contact-ico" style="background:rgba(56,189,248,0.12)">📧</div>
+        <div>
+          <div class="contact-name">Yara · Creator Relations</div>
+          <div class="contact-email">yara@babelnovel.com</div>
+        </div>
+        <button class="contact-copy-btn" onclick="copyEmail(this,'yara@babelnovel.com')">Copy</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHARE MODAL -->
+  <div class="modal-overlay" id="shareModal" onclick="closeModal('shareModal')">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal('shareModal')">×</button>
+      <div class="modal-title">📤 Share with a Creator Friend</div>
+      <div class="modal-sub">Know another Steam gaming creator who'd be a great fit? Share this brief with them!</div>
+      <div class="share-input-row">
+        <input class="share-input" value="https://it-kol.github.io/steam/en/" readonly />
+        <button class="btn btn-outline" onclick="copyShareUrl()" style="flex-shrink:0;font-size:12px;padding:8px 14px">Copy</button>
+      </div>
+      <div class="share-platforms">
+        <button class="share-plat-btn" onclick="shareToTwitter()"><span class="share-plat-ico">🐦</span><span class="share-plat-label">X / Twitter</span></button>
+        <button class="share-plat-btn" onclick="shareToLinkedIn()"><span class="share-plat-ico">💼</span><span class="share-plat-label">LinkedIn</span></button>
+        <button class="share-plat-btn" onclick="shareToInstagram()"><span class="share-plat-ico">📸</span><span class="share-plat-label">Instagram DM</span></button>
+        <button class="share-plat-btn" onclick="copyShareUrl()"><span class="share-plat-ico">📎</span><span class="share-plat-label">Copy Link</span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="hero-bg-gradient"></div>
+    <div class="hero-grid-bg"></div>
+    <div class="hero-particles" id="heroParticles"></div>
+    <div class="hero-deco-steam"><img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663402005199/irkqxliQeJwWyrVd.png" alt="" /></div>
+    <div class="hero-deco-steam2"><img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663402005199/irkqxliQeJwWyrVd.png" alt="" /></div>
+    <div class="hero-deco-pad"><img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663402005199/OSbQjWhsRwWaPbQg.png" alt="" /></div>
+    <div class="hero-deco-pad2"><img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663402005199/OSbQjWhsRwWaPbQg.png" alt="" /></div>
+    <div class="hero-content">
+      <div class="hero-logo-row">
+        <div class="logo-3d-wrap" id="heroLogo">
+          <div class="logo-3d-glow"></div>
+          <div class="logo-3d-ring"></div>
+          <div class="logo-3d-ring2"></div>
+          <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663402005199/AdlZOKmKnlgVUZuk.jpg" alt="Immersive Translate" class="logo-3d-img" />
+        </div>
+        <div class="hero-logo-x">×</div>
+        <div class="hero-steam-badge">
+          <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663402005199/irkqxliQeJwWyrVd.png" alt="Steam" />
+          <span>STEAM</span>
+        </div>
+      </div>
+      <div class="hero-eyebrow"><div class="pulse-dot"></div>Steam Gaming Creator · Collaboration Brief</div>
+      <h1 class="hero-h1">Give Your Steam Content<br><span class="grad-blue">A New Dimension</span></h1>
+      <p class="hero-sub">Immersive Translate now supports the Steam desktop client — helping players navigate foreign-language games and the global community. Your audience has almost certainly hit this pain point. And it's completely free to get started.</p>
+      <div class="hero-actions">
+        <a href="#brief" class="btn btn-primary btn-lg">View Product Brief</a>
+        <a href="#script" class="btn btn-outline btn-lg">Get Content Ideas</a>
+        <a href="https://immersivetranslate.com/en/landing/steam" target="_blank" class="btn btn-landing btn-lg">🎮 Steam Official Page ↗</a>
+        <a href="https://files.manuscdn.com/user_upload_by_module/session_file/310519663402005199/PXUqaowsmyaxFVeL.jpg" target="_blank" download="Immersive-Translate-Logo.jpg" class="btn btn-download-logo btn-lg">⬇ Download Logo</a>
+      </div>
+      <div class="hero-chips">
+        <span class="chip">🎮 Steam Game Reviews</span>
+        <span class="chip">🌐 Bilingual Translation</span>
+        <span class="chip">🔧 Tool Recommendations</span>
+        <span class="chip">🆓 Free Core Features</span>
+        <span class="chip">📦 Workshop Mods</span>
+        <span class="chip">💬 Global Community</span>
+      </div>
+      <div class="hero-divider"></div>
+      <div class="hero-stats">
+        <div class="stat"><div class="stat-n"><em>20M</em>+</div><div class="stat-l">Global Users</div></div>
+        <div class="stat"><div class="stat-n"><em>100</em>+</div><div class="stat-l">Languages</div></div>
+        <div class="stat"><div class="stat-n">&lt;<em>1</em>s</div><div class="stat-l">Translation Latency</div></div>
+        <div class="stat"><div class="stat-n"><em>20</em>+</div><div class="stat-l">AI Engines</div></div>
+        <div class="stat"><div class="stat-n"><em>4</em> Steps</div><div class="stat-l">Quick Setup</div></div>
+      </div>
+      <div style="margin-top:28px;display:flex;flex-direction:column;align-items:center;gap:12px;animation:fadeInUp 0.6s ease 0.6s both">
+        <div style="font-size:11px;color:var(--text-muted);letter-spacing:0.08em;text-transform:uppercase;font-weight:600">Trusted by all major browsers</div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center">
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 16px;border-radius:var(--radius-sm);background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08)"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/googlechrome.svg" style="width:18px;height:18px;filter:invert(1) opacity(0.7)" alt="Chrome" /><div><div style="font-size:11px;font-weight:700">Chrome</div><div style="font-size:10px;color:var(--text-muted)">2024 Favorite 🏆</div></div></div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 16px;border-radius:var(--radius-sm);background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08)"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/microsoftedge.svg" style="width:18px;height:18px;filter:invert(1) opacity(0.7)" alt="Edge" /><div><div style="font-size:11px;font-weight:700">Edge</div><div style="font-size:10px;color:var(--text-muted)">Built-in support</div></div></div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 16px;border-radius:var(--radius-sm);background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08)"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/safari.svg" style="width:18px;height:18px;filter:invert(1) opacity(0.7)" alt="Safari" /><div><div style="font-size:11px;font-weight:700">Safari</div><div style="font-size:10px;color:var(--text-muted)">iOS & macOS</div></div></div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 16px;border-radius:var(--radius-sm);background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08)"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/firefox.svg" style="width:18px;height:18px;filter:invert(1) opacity(0.7)" alt="Firefox" /><div><div style="font-size:11px;font-weight:700">Firefox</div><div style="font-size:10px;color:var(--text-muted)">Full support</div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCT BRIEF -->
+  <section id="brief">
+    <div class="inner">
+      <div class="sec-head reveal">
+        <div class="sec-label">Product Brief</div>
+        <h2 class="sec-title">What Is Immersive Translate?</h2>
+        <p class="sec-desc">Everything you need to know before creating your content — features, use cases, and what to mention (or avoid).</p>
+      </div>
+      <div class="brief-table-wrap reveal">
+        <table class="brief-table">
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>Priority</th>
+              <th>Use Case & Key Selling Point</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Steam Page Translation</td>
+              <td><span class="badge badge-must">★ Must Mention</span></td>
+              <td>Translate any Steam store page, reviews, and community posts into bilingual view. Perfect for players who want to understand foreign-language game descriptions and global reviews before buying.</td>
+            </tr>
+            <tr>
+              <td>Workshop Mod Translation</td>
+              <td><span class="badge badge-must">★ Must Mention</span></td>
+              <td>Translate complex mod installation instructions and compatibility notes in the Steam Workshop. A lifesaver for modders who rely on English-only documentation.</td>
+            </tr>
+            <tr>
+              <td>Input Box Translation</td>
+              <td><span class="badge badge-must">★ Must Mention</span></td>
+              <td>Triple-space in any text field to instantly translate your message. Write in your native language and post in English to the global community — no copy-pasting required.</td>
+            </tr>
+            <tr>
+              <td>Webpage Bilingual Translation</td>
+              <td><span class="badge badge-doc">★ Recommended</span></td>
+              <td>Works on any webpage — not just Steam. Translate English gaming news, patch notes, and wikis side-by-side with the original text.</td>
+            </tr>
+            <tr>
+              <td>Video Subtitle Translation</td>
+              <td><span class="badge badge-opt">◎ Optional</span></td>
+              <td>Add bilingual subtitles to YouTube gaming videos, tutorials, and reviews in real time. (Live stream translation only works for streams with built-in captions.)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="brief-grid">
+        <div class="brief-card reveal">
+          <div class="brief-card-title">✅ Recommended Talking Points</div>
+          <ul>
+            <li>Completely free to install and use core features</li>
+            <li>Works on the Steam desktop client (not just the browser)</li>
+            <li>Bilingual side-by-side view — original + translation simultaneously</li>
+            <li>Supports 100+ languages including Japanese, Korean, English, and more</li>
+            <li>Triple-space shortcut to translate any input field instantly</li>
+          </ul>
+        </div>
+        <div class="brief-card warn reveal">
+          <div class="brief-card-title">⚠️ Important Disclaimers</div>
+          <ul>
+            <li>Does NOT translate in-game text (only the Steam interface)</li>
+            <li>Live stream translation requires streams with built-in captions</li>
+            <li>Mention limitations proactively — it builds trust with your audience</li>
+            <li>Do not claim it translates game dialogue or in-game UI</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- PRICING -->
+      <div class="sec-head reveal" style="margin-top:48px;margin-bottom:24px">
+        <div class="sec-label">Pricing</div>
+        <h2 class="sec-title" style="font-size:24px">Plans & Pricing</h2>
+        <p class="sec-desc">Free to start. Pro and Max unlock advanced AI engines and higher usage limits.</p>
+      </div>
+      <div class="pricing-grid reveal">
+        <div class="pricing-card">
+          <div class="pricing-plan">Free</div>
+          <div class="pricing-price">$0 <span>/ forever</span></div>
+          <div class="pricing-desc">All core features included. No credit card required.</div>
+          <ul class="pricing-features">
+            <li>Webpage bilingual translation</li>
+            <li>Video subtitle translation</li>
+            <li>Input box translation</li>
+            <li>PDF translation (basic)</li>
+            <li>100+ languages</li>
+          </ul>
+        </div>
+        <div class="pricing-card featured">
+          <div class="pricing-badge">MOST POPULAR</div>
+          <div class="pricing-plan">Pro</div>
+          <div class="pricing-price">$9.99 <span>/ month</span></div>
+          <div class="pricing-desc">Advanced AI engines, higher limits, and priority support.</div>
+          <ul class="pricing-features">
+            <li>Everything in Free</li>
+            <li>GPT-4o / Claude / Gemini engines</li>
+            <li>Unlimited PDF translation</li>
+            <li>AI Reply (email & chat drafting)</li>
+            <li>Priority customer support</li>
+          </ul>
+        </div>
+        <div class="pricing-card">
+          <div class="pricing-plan">Max</div>
+          <div class="pricing-price">$24.99 <span>/ month</span></div>
+          <div class="pricing-desc">For power users and teams who need the highest limits.</div>
+          <ul class="pricing-features">
+            <li>Everything in Pro</li>
+            <li>Highest usage limits</li>
+            <li>Early access to new features</li>
+            <li>Dedicated support</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- PRODUCTION TIPS -->
+      <div class="sec-head reveal" style="margin-top:48px;margin-bottom:24px">
+        <div class="sec-label">Creator Tips</div>
+        <h2 class="sec-title" style="font-size:24px">Key Production Tips</h2>
+      </div>
+      <div class="tips-grid reveal">
+        <div class="tips-card">
+          <div class="tips-card-title">🎯 Content Strategy & Hook</div>
+          <div class="tips-item">Open with a relatable pain point — "Ever missed a great game just because it had no English translation?" hooks immediately.</div>
+          <div class="tips-item">Keep it focused: cover no more than 3 features per video. More features = less impact. (Exception: YouTube long-form reviews.)</div>
+          <div class="tips-item">Show the "before/after" — the contrast between a confusing foreign page and a clean bilingual view is your most powerful visual.</div>
+          <div class="tips-item">Proactively mention what it can't do (in-game text). Honesty builds trust and reduces negative comments.</div>
+        </div>
+        <div class="tips-card">
+          <div class="tips-card-title">📱 Platform & Format Tips</div>
+          <div class="tips-item">For YouTube Shorts / TikTok / Instagram Reels: keep it under 60 seconds, lead with the hook in the first 3 seconds.</div>
+          <div class="tips-item">For YouTube long-form: use chapters. "Install (0:00) → Store Page (1:30) → Workshop (3:00) → Input Box Trick (4:30)"</div>
+          <div class="tips-item">Always pin the Landing Page link + exclusive discount code in the comments. This is the single biggest driver of conversions.</div>
+          <div class="tips-item">Mention the weekly subscription giveaway at the end of your video to boost engagement and comment activity.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCRIPT IDEAS -->
+  <section id="script">
+    <div class="inner">
+      <div class="sec-head reveal">
+        <div class="sec-label">Content Ideas</div>
+        <h2 class="sec-title">Script Angles & Content Ideas</h2>
+        <p class="sec-desc">Four proven content angles, each with suggested titles, opening hooks, and CTA scripts. Pick the one that fits your style.</p>
+      </div>
+      <div class="notice-warn reveal">
+        <span>🚫</span>
+        <span><strong>No vlog-style integrations.</strong> Do not insert a brief product mention into a lifestyle or daily vlog. Content must be genuinely focused on the tool — either a dedicated review, tutorial, or recommendation video.</span>
+      </div>
+      <div class="notice-yellow reveal">
+        <span>⚠️</span>
+        <span><strong>Feature limit:</strong> Cover no more than <strong>3 features</strong> per video. Focused content converts better. (Exception: YouTube long-form reviews may cover more.)</span>
+      </div>
+      <div class="tab-row reveal">
+        <button class="tab on" onclick="switchTab(this,'pain')">😤 Pain Point</button>
+        <button class="tab" onclick="switchTab(this,'eff')">⚡ Efficiency</button>
+        <button class="tab" onclick="switchTab(this,'rec')">🎁 Recommendation</button>
+        <button class="tab" onclick="switchTab(this,'exp')">🎮 Review</button>
+      </div>
+
+      <div class="panel on" id="panel-pain">
+        <div class="sc-card reveal">
+          <div class="sc-head"><span class="sc-badge b-pain">Pain Point</span><div class="sc-head-title">Can't read the game page? Here's the fix.</div></div>
+          <div class="sc-body">
+            <div>
+              <div class="sc-field-label">Suggested Titles</div>
+              <div class="sc-titles">
+                <div class="sc-title-i">I finally unlocked the full Steam experience — this hidden trick is a game changer</div>
+                <div class="sc-title-i">How many great Steam games have you skipped because of the language barrier?</div>
+                <div class="sc-title-i">Can't read English reviews? One extension fixes everything</div>
+              </div>
+            </div>
+            <div>
+              <div class="sc-field-label">Opening Hook (first 5 seconds)</div>
+              <div class="sc-quote">"You find an incredible game on Steam — then you see it has no translation. Or you're trying to install a mod but the instructions are all in English. Today I'm showing you one trick that completely solves this."</div>
+            </div>
+            <div>
+              <div class="sc-field-label">Mid-Video Demo</div>
+              <div class="sc-field-text">Open a foreign-language game page and show the "before" state — confusing, unreadable. Enable Immersive Translate and show the instant bilingual view. Then switch to the Workshop and show a complex mod description becoming readable. Emphasize: "free, instant, no setup."</div>
+            </div>
+            <div>
+              <div class="sc-field-label">Closing CTA</div>
+              <div class="sc-quote">"Link is in the comments — it's completely free to install. I've also got an exclusive discount code for Pro pinned down there, and I'm giving away 5 free weekly subscriptions in the comments. Drop a comment to enter!"</div>
+            </div>
+            <div class="sc-full">
+              <div class="notice-box" style="background:rgba(251,191,36,0.06);border-color:rgba(251,191,36,0.2)"><span>🎁</span><span><strong style="color:var(--yellow)">Always pin in comments:</strong> Landing Page link + exclusive discount code + weekly subscription giveaway. These three elements directly drive conversions — don't skip them.</span></div>
+              <div class="notice-box"><span>⚠️</span><span>Clarify in your video: this translates the Steam interface, not in-game text. Saying this upfront actually builds more trust.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" id="panel-eff">
+        <div class="sc-card reveal">
+          <div class="sc-head"><span class="sc-badge b-eff">Efficiency</span><div class="sc-head-title">Research games faster, buy with confidence</div></div>
+          <div class="sc-body">
+            <div>
+              <div class="sc-field-label">Suggested Titles</div>
+              <div class="sc-titles">
+                <div class="sc-title-i">Steam players need this — read global reviews in seconds</div>
+                <div class="sc-title-i">Stop buying bad games — this tool shows you what the world really thinks</div>
+                <div class="sc-title-i">The Steam review section is full of gold — but you can't read it</div>
+              </div>
+            </div>
+            <div>
+              <div class="sc-field-label">Opening Hook (first 5 seconds)</div>
+              <div class="sc-quote">"Worried about buying a bad game? English-only reviews not enough? I'll show you how to read every global review in seconds — and never regret a purchase again."</div>
+            </div>
+            <div>
+              <div class="sc-field-label">Mid-Video Demo</div>
+              <div class="sc-field-text">Browse a store page with multilingual reviews → enable translation → long foreign reviews instantly become bilingual. Show the triple-space input trick to post in English from the community hub. Emphasize the efficiency angle: "research in half the time."</div>
+            </div>
+            <div>
+              <div class="sc-field-label">Closing CTA</div>
+              <div class="sc-quote">"Free to install, takes under 2 minutes. Link and discount code are pinned in the comments. I'm also giving away 5 free weekly subscriptions — comment to enter!"</div>
+            </div>
+            <div class="sc-full">
+              <div class="notice-box" style="background:rgba(251,191,36,0.06);border-color:rgba(251,191,36,0.2)"><span>🎁</span><span><strong style="color:var(--yellow)">Always pin in comments:</strong> Landing Page link + exclusive discount code + weekly subscription giveaway.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" id="panel-rec">
+        <div class="sc-card reveal">
+          <div class="sc-head"><span class="sc-badge b-rec">Recommendation</span><div class="sc-head-title">Hidden gem tool — too good not to share</div></div>
+          <div class="sc-body">
+            <div>
+              <div class="sc-field-label">Suggested Titles</div>
+              <div class="sc-titles">
+                <div class="sc-title-i">This Steam extension is genuinely underrated — bilingual everything</div>
+                <div class="sc-title-i">Wait, Steam supports extensions? This one is actually incredible</div>
+                <div class="sc-title-i">The one tool every Steam player needs (and it's free)</div>
+              </div>
+            </div>
+            <div>
+              <div class="sc-field-label">Opening Hook (first 5 seconds)</div>
+              <div class="sc-quote">"I just found a Steam extension that I genuinely can't believe more people don't know about. It's free, it takes 2 minutes to set up, and it completely changes how you use Steam."</div>
+            </div>
+            <div>
+              <div class="sc-field-label">Mid-Video Demo</div>
+              <div class="sc-field-text">Focus on the Workshop mod translation — show how complex English mod instructions become instantly readable. Walk through the 4-step install. Emphasize "free, simple, no bloat." Optionally show the store page bilingual view for visual impact.</div>
+            </div>
+            <div>
+              <div class="sc-field-label">Closing CTA</div>
+              <div class="sc-quote">"Too good to keep to myself — link is in the comments, completely free. I've got an exclusive discount code for Pro pinned too, and 5 free weekly subscriptions up for grabs in the comments!"</div>
+            </div>
+            <div class="sc-full">
+              <div class="notice-box" style="background:rgba(251,191,36,0.06);border-color:rgba(251,191,36,0.2)"><span>🎁</span><span><strong style="color:var(--yellow)">Always pin in comments:</strong> Landing Page link + exclusive discount code + weekly subscription giveaway.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" id="panel-exp">
+        <div class="sc-card reveal">
+          <div class="sc-head"><span class="sc-badge b-exp">Review</span><div class="sc-head-title">Hands-on test — does it actually work?</div></div>
+          <div class="sc-body">
+            <div>
+              <div class="sc-field-label">Suggested Titles</div>
+              <div class="sc-titles">
+                <div class="sc-title-i">I tested Immersive Translate on Steam — here's what actually works</div>
+                <div class="sc-title-i">Steam gets a major upgrade — full bilingual mode tested</div>
+                <div class="sc-title-i">Honest review: Immersive Translate on Steam (the good and the limits)</div>
+              </div>
+            </div>
+            <div>
+              <div class="sc-field-label">Opening Hook (first 5 seconds)</div>
+              <div class="sc-quote">"Today I'm testing whether Immersive Translate actually solves the language problem on Steam. I'll show you exactly what works, what doesn't, and whether it's worth installing."</div>
+            </div>
+            <div>
+              <div class="sc-field-label">Mid-Video Demo</div>
+              <div class="sc-field-text">Full walkthrough: install (4 steps) → store page translation → Workshop mod translation → community hub translation → input box trick. Use a popular game with lots of foreign-language content. Give genuine reactions. Mention limitations clearly — "it doesn't translate in-game text, but everything else works great."</div>
+            </div>
+            <div>
+              <div class="sc-field-label">Closing CTA</div>
+              <div class="sc-quote">"Verdict: store and Workshop translation are genuinely excellent. In-game text isn't supported — just be aware of that. Overall, it's one of the best free tools I've found for Steam. Link and discount code in the comments, plus a weekly subscription giveaway!"</div>
+            </div>
+            <div class="sc-full">
+              <div class="notice-box" style="background:rgba(251,191,36,0.06);border-color:rgba(251,191,36,0.2)"><span>🎁</span><span><strong style="color:var(--yellow)">Always pin in comments:</strong> Landing Page link + exclusive discount code + weekly subscription giveaway.</span></div>
+              <div class="notice-box"><span>💡</span><span>Proactively mentioning limitations in a review actually increases trust and reduces negative comments. Audiences appreciate honesty.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSTALL GUIDE -->
+  <section class="install-bg" id="install">
+    <div class="inner">
+      <div class="sec-head reveal">
+        <div class="sec-label">Quick Start</div>
+        <h2 class="sec-title">Creator Quick-Start Guide</h2>
+        <p class="sec-desc">From install to recording-ready in 4 steps, under 5 minutes. Streamlined for creators — no extra steps.</p>
+      </div>
+      <div class="steam-divider"><div class="steam-divider-ico">🎮</div></div>
+      <div class="tab-row reveal" style="margin-bottom:28px">
+        <button class="tab on" onclick="switchInstallTab(this,'desktop')" id="tabDesktop" style="flex:1;text-align:center">🖥️ Desktop (Steam Client)</button>
+        <button class="tab" onclick="switchInstallTab(this,'browser')" id="tabBrowser" style="flex:1;text-align:center">🌐 Browser Extension</button>
+      </div>
+      <div id="install-desktop">
+        <div class="steps-row">
+          <div class="step-card reveal d1">
+            <div class="step-n">01</div>
+            <div class="step-em">📦</div>
+            <div class="step-t">Download the Package</div>
+            <div class="step-d">Visit the official Steam landing page and download the latest extension package (.zip). Extract it to find the .crx file.</div>
+            <a href="https://immersivetranslate.com/en/landing/steam" target="_blank" class="code-tag" style="text-decoration:none;display:inline-block;margin-top:8px">Download Free →</a>
+          </div>
+          <div class="step-card reveal d2">
+            <div class="step-n">02</div>
+            <div class="step-em">🪟</div>
+            <div class="step-t">Open a Steam Standalone Window</div>
+            <div class="step-d">Open and log into Steam. Right-click any game and select "Open in New Tab" (or hold <span class="code-tag">Ctrl</span> and click) to open a standalone Steam window.</div>
+          </div>
+          <div class="step-card reveal d3">
+            <div class="step-n">03</div>
+            <div class="step-em">🔧</div>
+            <div class="step-t">Open Extensions Manager</div>
+            <div class="step-d">In the new window's address bar, type the URL below and press Enter. Enable <strong style="color:var(--cyan)">Developer Mode</strong> in the top right.</div>
+            <div style="margin-top:10px;display:flex;align-items:center;gap:8px">
+              <span class="code-tag" style="flex:1;text-align:center">chrome://extensions/</span>
+              <button onclick="navigator.clipboard.writeText('chrome://extensions/').then(()=>{this.textContent='✓ Copied';setTimeout(()=>{this.textContent='Copy'},1500)})" class="code-tag" style="cursor:pointer;background:rgba(56,189,248,0.1);border-color:var(--cyan);color:var(--cyan)">Copy</button>
+            </div>
+          </div>
+          <div class="step-card reveal d4">
+            <div class="step-n">04</div>
+            <div class="step-em">🎉</div>
+            <div class="step-t">Drag & Drop to Install</div>
+            <div class="step-d">Drag the .crx file into the extensions page. After installing, close and reopen Steam. Refresh a few times — the <strong style="color:var(--cyan)">floating button</strong> on the right means it's working!</div>
+          </div>
+        </div>
+      </div>
+      <div id="install-browser" style="display:none">
+        <div class="steps-row" style="grid-template-columns:repeat(3,1fr)">
+          <div class="step-card reveal d1">
+            <div class="step-n">01</div>
+            <div class="step-em">🌐</div>
+            <div class="step-t">Visit the Extension Store</div>
+            <div class="step-d">Search "Immersive Translate" in the Chrome Web Store, Edge Add-ons, Firefox Add-ons, or Safari Extensions. Click Install.</div>
+            <a href="https://chrome.google.com/webstore/detail/immersive-translate/bpoadfkcbjbfhfodiogcnhhhpibjhbnh" target="_blank" class="code-tag" style="text-decoration:none;display:inline-block;margin-top:8px">Chrome Store →</a>
+          </div>
+          <div class="step-card reveal d2">
+            <div class="step-n">02</div>
+            <div class="step-em">⚙️</div>
+            <div class="step-t">Enable the Extension</div>
+            <div class="step-d">After installing, pin the extension to your toolbar. Click the Immersive Translate icon to open settings and configure your preferred translation language.</div>
+          </div>
+          <div class="step-card reveal d3">
+            <div class="step-n">03</div>
+            <div class="step-em">✅</div>
+            <div class="step-t">Start Translating</div>
+            <div class="step-d">Visit any webpage and click the floating button, or use the keyboard shortcut. Bilingual view appears instantly.</div>
+          </div>
+        </div>
+      </div>
+      <div class="tip-bar reveal" style="margin-top:24px;display:flex;align-items:flex-start;gap:10px;padding:14px 18px;border-radius:var(--radius-md);background:rgba(56,189,248,0.05);border:1px solid rgba(56,189,248,0.15);font-size:13px;color:var(--text-secondary)">
+        <span>💡</span>
+        <span><strong style="color:var(--cyan)">Creator Tip:</strong> Record the installation process as part of your content — it takes under 2 minutes and showing how simple it is drives installs more effectively than any description.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- REFERENCE VIDEOS -->
+  <section class="ref-bg" id="refs">
+    <div class="inner">
+      <div class="sec-head reveal">
+        <div class="sec-label">Case Studies</div>
+        <h2 class="sec-title">High-Performing Reference Videos</h2>
+        <p class="sec-desc">Real creator content that has driven strong results. Study the hooks, formats, and CTAs —
+ then adapt them for your own style.</p>
+      </div>
+      <div class="ref-row-label reveal">YouTube</div>
+      <div class="ref-grid reveal">
+        <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" class="ref-card">
+          <div class="ref-thumb">
+            <div class="play-circle">▶</div>
+            <div class="ref-platform-tag plat-yt">YouTube</div>
+            <div class="ref-play-tag">Click to watch →</div>
+          </div>
+          <div class="ref-body">
+            <div class="ref-author-row"><div class="ref-avatar"></div><div class="ref-author-name">Gaming Creator</div></div>
+            <div class="ref-title">I tested every Steam translation tool — this one actually works</div>
+            <div class="ref-insight">💡 Hook: opens with a failed translation attempt. Drives 80% of comments asking for the link.</div>
+          </div>
+          <div class="ref-foot"><div class="ref-stats"><span class="ref-stat">👁 120K views</span><span class="ref-stat">💬 340 comments</span></div><span class="ref-view">Watch →</span></div>
+        </a>
+        <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" class="ref-card">
+          <div class="ref-thumb">
+            <div class="play-circle">▶</div>
+            <div class="ref-platform-tag plat-yt">YouTube</div>
+            <div class="ref-play-tag">Click to watch →</div>
+          </div>
+          <div class="ref-body">
+            <div class="ref-author-row"><div class="ref-avatar"></div><div class="ref-author-name">Tech Reviewer</div></div>
+            <div class="ref-title">Steam Workshop mods in your language — 2-minute setup</div>
+            <div class="ref-insight">💡 Tutorial format with timestamps. High retention, strong install rate.</div>
+          </div>
+          <div class="ref-foot"><div class="ref-stats"><span class="ref-stat">👁 85K views</span><span class="ref-stat">💬 210 comments</span></div><span class="ref-view">Watch →</span></div>
+        </a>
+        <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" class="ref-card">
+          <div class="ref-thumb">
+            <div class="play-circle">▶</div>
+            <div class="ref-platform-tag plat-yt">YouTube</div>
+            <div class="ref-play-tag">Click to watch →</div>
+          </div>
+          <div class="ref-body">
+            <div class="ref-author-row"><div class="ref-avatar"></div><div class="ref-author-name">Steam Guide Creator</div></div>
+            <div class="ref-title">The Steam extension I've been using for 6 months — honest review</div>
+            <div class="ref-insight">💡 Long-form review with genuine pros/cons. High trust, strong affiliate conversions.</div>
+          </div>
+          <div class="ref-foot"><div class="ref-stats"><span class="ref-stat">👁 67K views</span><span class="ref-stat">💬 180 comments</span></div><span class="ref-view">Watch →</span></div>
+        </a>
+      </div>
+      <div class="ref-row-label reveal">Instagram Reels / TikTok</div>
+      <div class="ref-grid reveal">
+        <a href="https://www.instagram.com/p/DHk1Ma0P2X6/" target="_blank" class="ref-card">
+          <div class="ref-thumb" style="background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)">
+            <div class="play-circle">▶</div>
+            <div class="ref-platform-tag plat-ig">Instagram</div>
+            <div class="ref-play-tag">Click to watch →</div>
+          </div>
+          <div class="ref-body">
+            <div class="ref-author-row"><div class="ref-avatar" style="background:linear-gradient(135deg,#833ab4,#fd1d1d)"></div><div class="ref-author-name">@creator</div></div>
+            <div class="ref-title">Bilingual Steam pages — this changes everything</div>
+            <div class="ref-insight">💡 30-second Reel. Before/after visual drives massive saves.</div>
+          </div>
+          <div class="ref-foot"><div class="ref-stats"><span class="ref-stat">❤️ High engagement</span></div><span class="ref-view">Watch →</span></div>
+        </a>
+        <a href="https://www.instagram.com/reel/DNNakqMyALt/" target="_blank" class="ref-card">
+          <div class="ref-thumb" style="background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)">
+            <div class="play-circle">▶</div>
+            <div class="ref-platform-tag plat-ig">Instagram</div>
+            <div class="ref-play-tag">Click to watch →</div>
+          </div>
+          <div class="ref-body">
+            <div class="ref-author-row"><div class="ref-avatar" style="background:linear-gradient(135deg,#833ab4,#fd1d1d)"></div><div class="ref-author-name">@creator</div></div>
+            <div class="ref-title">Install in 60 seconds — Steam Workshop finally readable</div>
+            <div class="ref-insight">💡 Speed-run install format. "So easy" comments drive organic reach.</div>
+          </div>
+          <div class="ref-foot"><div class="ref-stats"><span class="ref-stat">❤️ High engagement</span></div><span class="ref-view">Watch →</span></div>
+        </a>
+        <a href="https://www.instagram.com/reel/DG5SS5pA6Rh/" target="_blank" class="ref-card">
+          <div class="ref-thumb" style="background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)">
+            <div class="play-circle">▶</div>
+            <div class="ref-platform-tag plat-ig">Instagram</div>
+            <div class="ref-play-tag">Click to watch →</div>
+          </div>
+          <div class="ref-body">
+            <div class="ref-author-row"><div class="ref-avatar" style="background:linear-gradient(135deg,#833ab4,#fd1d1d)"></div><div class="ref-author-name">@creator</div></div>
+            <div class="ref-title">Triple-space trick — type in any language, post in English</div>
+            <div class="ref-insight">💡 Single-feature focus. "I didn't know this existed" reaction drives shares.</div>
+          </div>
+          <div class="ref-foot"><div class="ref-stats"><span class="ref-stat">❤️ High engagement</span></div><span class="ref-view">Watch →</span></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- COLLAB FLOW -->
+  <section id="collab">
+    <div class="inner">
+      <div class="sec-head reveal">
+        <div class="sec-label">Collab Process</div>
+        <h2 class="sec-title">How the Collaboration Works</h2>
+        <p class="sec-desc">A straightforward 5-step process from first contact to going live. We aim to be as low-friction as possible.</p>
+      </div>
+      <div class="flow-list">
+        <div class="flow-step reveal">
+          <div class="flow-step-left"><div class="flow-step-num fsn-1">1</div><div class="flow-step-line fsl-1"></div></div>
+          <div class="flow-step-right">
+            <div class="flow-step-tag fst-1">Reach Out</div>
+            <div class="flow-step-title">Send us your channel info</div>
+            <div class="flow-step-desc">Email us with your platform, channel link, and approximate audience size. We review all applications and respond within 24 hours.</div>
+          </div>
+        </div>
+        <div class="flow-step reveal">
+          <div class="flow-step-left"><div class="flow-step-num fsn-2">2</div><div class="flow-step-line fsl-2"></div></div>
+          <div class="flow-step-right">
+            <div class="flow-step-tag fst-2">Onboarding</div>
+            <div class="flow-step-title">Receive your creator package</div>
+            <div class="flow-step-desc">We'll send you a Pro account, exclusive discount code for your audience, this brief, and any additional assets you need.</div>
+            <div class="flow-step-items">
+              <span class="flow-item">Pro Account</span>
+              <span class="flow-item">Exclusive Discount Code</span>
+              <span class="flow-item">Creator Brief</span>
+              <span class="flow-item">Logo Assets</span>
+            </div>
+          </div>
+        </div>
+        <div class="flow-step reveal">
+          <div class="flow-step-left"><div class="flow-step-num fsn-3">3</div><div class="flow-step-line fsl-3"></div></div>
+          <div class="flow-step-right">
+            <div class="flow-step-tag fst-3">Creation</div>
+            <div class="flow-step-title">Create your content</div>
+            <div class="flow-step-desc">Full creative freedom — we don't require scripts or approval. Just follow the brief guidelines and keep it authentic. Pin the Landing Page link + discount code + weekly giveaway in your comments.</div>
+          </div>
+        </div>
+        <div class="flow-step reveal">
+          <div class="flow-step-left"><div class="flow-step-num fsn-4">4</div><div class="flow-step-line fsl-4"></div></div>
+          <div class="flow-step-right">
+            <div class="flow-step-tag fst-4">Audience Perks</div>
+            <div class="flow-step-title">Exclusive perks for your audience</div>
+            <div class="flow-step-desc">Your exclusive discount code gives your audience a special deal. Run a weekly subscription giveaway in the comments to drive engagement and reward your community.</div>
+            <div class="flow-step-items">
+              <span class="flow-item">Exclusive Discount Code</span>
+              <span class="flow-item">Weekly Subscription Giveaway</span>
+              <span class="flow-item">Free Trial for Followers</span>
+            </div>
+          </div>
+        </div>
+        <div class="flow-step reveal">
+          <div class="flow-step-left"><div class="flow-step-num fsn-5">5</div></div>
+          <div class="flow-step-right">
+            <div class="flow-step-tag fst-5">Affiliate</div>
+            <div class="flow-step-title">Join the Affiliate Program</div>
+            <div class="flow-step-desc">Earn ongoing commissions through our affiliate program. Every subscription your audience purchases through your link earns you a cut.</div>
+            <div class="flow-step-items">
+              <a href="https://immersivetranslate.com/en/affiliate/" target="_blank" class="flow-item" style="color:var(--cyan);border-color:rgba(56,189,248,0.25);background:rgba(56,189,248,0.06)">Join Affiliate Program →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="collab-cta-box reveal">
+        <h3>Ready to collaborate?</h3>
+        <p>We work with creators of all sizes. If your content genuinely helps your audience, we want to work with you.</p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+          <button onclick="openCollabModal()" class="btn btn-primary btn-lg">📧 Get in Touch</button>
+          <a href="https://immersivetranslate.com/en/affiliate/" target="_blank" class="btn btn-outline btn-lg">💰 Affiliate Program</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" style="padding:60px 0">
+    <div class="inner">
+      <div class="sec-head reveal">
+        <div class="sec-label">Contact</div>
+        <h2 class="sec-title">Get in Touch</h2>
+        <p class="sec-desc">Email us directly — we respond within 24 hours on business days.</p>
+      </div>
+      <div style="max-width:520px;margin:0 auto">
+        <div class="contact-row reveal">
+          <div class="contact-ico" style="background:rgba(236,72,153,0.12)">📧</div>
+          <div>
+            <div class="contact-name">Song Enqing · Partnerships</div>
+            <div class="contact-email">songenqing@funstory.ai</div>
+          </div>
+          <button class="contact-copy-btn" onclick="copyEmail(this,'songenqing@funstory.ai')">Copy</button>
+        </div>
+        <div class="contact-row reveal">
+          <div class="contact-ico" style="background:rgba(56,189,248,0.12)">📧</div>
+          <div>
+            <div class="contact-name">Yara · Creator Relations</div>
+            <div class="contact-email">yara@babelnovel.com</div>
+          </div>
+          <button class="contact-copy-btn" onclick="copyEmail(this,'yara@babelnovel.com')">Copy</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-logo">
+      <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663402005199/AdlZOKmKnlgVUZuk.jpg" alt="" class="footer-logo-img" />
+      <span>Immersive Translate</span>
+    </div>
+    <div class="footer-desc">Steam Creator Collaboration Brief · Confidential</div>
+    <div class="footer-links">
+      <a href="https://immersivetranslate.com/en/" target="_blank">Official Website</a>
+      <a href="https://immersivetranslate.com/en/pricing/" target="_blank">Pricing</a>
+      <a href="https://immersivetranslate.com/en/affiliate/" target="_blank">Affiliate Program</a>
+      <a href="https://immersivetranslate.com/en/learn/" target="_blank">Tutorial Center</a>
+    </div>
+    <div class="footer-copy">© 2025 Immersive Translate. All rights reserved. For creator collaboration use only.</div>
+  </footer>
+
+  <script>
+    // Particles
+    (function(){
+      const c = document.getElementById('heroParticles');
+      if(!c) return;
+      for(let i=0;i<18;i++){
+        const p = document.createElement('div');
+        p.className = 'particle';
+        const s = Math.random()*4+2;
+        p.style.cssText = `width:${s}px;height:${s}px;left:${Math.random()*100}%;animation-duration:${Math.random()*12+8}s;animation-delay:${Math.random()*8}s;`;
+        c.appendChild(p);
+      }
+    })();
+
+    // Mobile nav
+    function toggleMobileNav(){
+      const n = document.getElementById('mobileNav');
+      n.style.display = n.style.display === 'flex' ? 'none' : 'flex';
+    }
+    function closeMobileNav(){ document.getElementById('mobileNav').style.display = 'none'; }
+
+    // Tabs
+    function switchTab(btn, id){
+      document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+      btn.classList.add('on');
+      document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+      document.getElementById('panel-'+id).classList.add('on');
+    }
+    function switchInstallTab(btn, id){
+      document.querySelectorAll('#install .tab').forEach(t=>t.classList.remove('on'));
+      btn.classList.add('on');
+      document.getElementById('install-desktop').style.display = id==='desktop'?'block':'none';
+      document.getElementById('install-browser').style.display = id==='browser'?'block':'none';
+    }
+
+    // Modals
+    function openCollabModal(){ document.getElementById('collabModal').classList.add('open'); }
+    function openShareModal(){ document.getElementById('shareModal').classList.add('open'); }
+    function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeModal('collabModal'); closeModal('shareModal'); }});
+
+    // Copy helpers
+    function copyEmail(btn, email){
+      navigator.clipboard.writeText(email).then(()=>{
+        btn.textContent='✓ Copied'; btn.classList.add('copied');
+        setTimeout(()=>{ btn.textContent='Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+    function copyShareUrl(){
+      navigator.clipboard.writeText('https://it-kol.github.io/steam/en/').then(()=>{ alert('Link copied!'); });
+    }
+    function copyLandingUrl(btn){
+      navigator.clipboard.writeText('https://immersivetranslate.com/en/landing/steam').then(()=>{
+        btn.textContent='✓ Copied'; setTimeout(()=>{ btn.textContent='Copy Link'; }, 2000);
+      });
+    }
+    function shareToTwitter(){ window.open('https://twitter.com/intent/tweet?text=Check+out+this+Immersive+Translate+creator+brief+for+Steam+creators&url=https://it-kol.github.io/steam/en/','_blank'); }
+    function shareToLinkedIn(){ window.open('https://www.linkedin.com/sharing/share-offsite/?url=https://it-kol.github.io/steam/en/','_blank'); }
+    function shareToInstagram(){ copyShareUrl(); alert('Link copied — paste it in your Instagram DM!'); }
+
+    // Scroll effects
+    const observer = new IntersectionObserver(entries=>{
+      entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
+    }, {threshold:0.1});
+    document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+    // Bottom bar
+    window.addEventListener('scroll', ()=>{
+      const bar = document.getElementById('bottomBar');
+      const float = document.getElementById('sideFloat');
+      if(window.scrollY > 400){
+        bar && bar.classList.add('visible');
+        float && float.classList.add('visible');
+      } else {
+        bar && bar.classList.remove('visible');
+        float && float.classList.remove('visible');
+      }
+    });
+
+    // 3D logo tilt
+    const logo = document.getElementById('heroLogo');
+    if(logo){
+      document.addEventListener('mousemove', e=>{
+        const rect = logo.getBoundingClientRect();
+        const cx = rect.left + rect.width/2;
+        const cy = rect.top + rect.height/2;
+        const dx = (e.clientX - cx) / window.innerWidth;
+        const dy = (e.clientY - cy) / window.innerHeight;
+        logo.style.transform = `perspective(600px) rotateY(${dx*18}deg) rotateX(${-dy*18}deg)`;
+      });
+      document.addEventListener('mouseleave', ()=>{ logo.style.transform = ''; });
+    }
+
+    // Nav active
+    const sections = document.querySelectorAll('section[id]');
+    window.addEventListener('scroll', ()=>{
+      let cur = '';
+      sections.forEach(s=>{ if(window.scrollY >= s.offsetTop - 100) cur = s.id; });
+      document.querySelectorAll('.nav-links a').forEach(a=>{
+        a.classList.toggle('active', a.getAttribute('href') === '#'+cur);
+      });
+    });
+  </script>
+</body>
+</html>
